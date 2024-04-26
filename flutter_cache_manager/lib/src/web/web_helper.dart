@@ -86,12 +86,16 @@ class WebHelper {
   Stream<FileResponse> _updateFile(String url, String key,
       {Map<String, String>? authHeaders}) async* {
     var cacheObject = await _store.retrieveCacheData(key);
+    String fileExtension = url.lastIndexOf('.') > url.lastIndexOf('/')
+        ? url.substring(url.lastIndexOf('.'))
+        : '.file';
+    fileExtension = fileExtension.split('?')[0];
     cacheObject = cacheObject == null
         ? CacheObject(
             url,
             key: key,
             validTill: clock.now(),
-            relativePath: '${const Uuid().v1()}.file',
+            relativePath: '${const Uuid().v1()}$fileExtension',
           )
         : cacheObject.copyWith(url: url);
     final response = await _download(cacheObject, authHeaders);

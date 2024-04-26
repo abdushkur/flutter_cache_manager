@@ -68,6 +68,11 @@ class CompatFileServiceGetResponse implements FileServiceResponse {
     if (contentTypeHeader != null) {
       final contentType = ContentType.parse(contentTypeHeader);
       fileExtension = contentType.fileExtension;
+      if(fileExtension.isEmpty || fileExtension == '.'){
+        if(contentTypeHeader== 'video'){
+          fileExtension = '.mp4';
+        }
+      }
     }
     return fileExtension;
   }
